@@ -30,7 +30,7 @@
   //   odd[i].style.backgroundColor ='green';
 //}
 //parentnode
- var items=document.querySelector('#items');
+ //var items=document.querySelector('#items');
 // console.log(items.parentNode);
 // items.parentNode.style.backgroundColor= '#f4f4f4';
 
@@ -64,18 +64,67 @@
 // items.previousElementSibling.style.color='green';
 
 //createelement
-var newDev=document.createElement('dev');
-newDev.className='hello';
-newDev.id='hello1';
-//set attributes
-newDev.setAttribute('title', 'hello dev');
-//create text node
-var newdevtext=document.createTextNode('hello world');
-//addind text to div
-newDev.append(newdevtext);
+// var newDev=document.createElement('dev');
+// newDev.className='hello';
+// newDev.id='hello1';
+// //set attributes
+// newDev.setAttribute('title', 'hello dev');
+// //create text node
+// var newdevtext=document.createTextNode('hello world');
+// //addind text to div
+// newDev.append(newdevtext);
 
-var container=document.querySelector('header .container');
-var h1=document.querySelector('header h1');
+// var container=document.querySelector('header .container');
+// var h1=document.querySelector('header h1');
 
-console.log(newDev);
-container.insertBefore(newDev,h1);
+// console.log(newDev);
+// container.insertBefore(newDev,h1);
+
+var form=document.getElementById('addForm');
+var itemlist=document.getElementById('items');
+ //add eventlistener
+ form.addEventListener('submit',addItem);
+ itemlist.addEventListener('click',removeItem);
+
+ function addItem(e){
+    e.preventDefault();
+    console.log(1);
+    var items=document.getElementById('item').value;
+    var li=document.createElement('li');
+ li.className='list-group-item';
+//add text node
+li.appendChild(document.createTextNode(items));
+//create delete button
+var deletebtn=document.createElement('button');
+deletebtn.className='btn btn-danger btn-sm float-right delete';
+//append text node
+
+deletebtn.appendChild(document.createTextNode('x'));
+li.append(deletebtn);
+itemlist.append(li);
+ }
+
+ function removeItem(e){
+    if(e.target.classList.contains('delete')){
+        if(confirm('are you sure?')){
+            var li=e.target.parentElement;
+            itemlist.removeChild(li);
+            //create delete button
+var editbtn=document.createElement('button');
+editbtn.className='btn btn-danger btn-sm float-right delete';
+//append text node
+var items=document.getElementById('item').value;
+    var li=document.createElement('li');
+ li.className='list-group-item';
+//add text node
+li.appendChild(document.createTextNode(items));
+//create delete button
+var editbtn=document.createElement('button');
+
+editbtn.appendChild(document.createTextNode('edit'));
+li.append(editbtn);
+itemlist.append(li);
+        }
+    }
+
+ }
