@@ -1,35 +1,51 @@
-<div class="container">
-    <h1>HTML registration form with varification</h1>
-    <form onsubmit=savetoLocalStroage(e)>
+<!DOCTYPE html>
+<html lang="en">
+<h2>HEADING</h2>
+  <body>
+    <form onsubmit="saveToLocalStroage(event)">
+    <label>name</label>
+    <input type="text" name="usernam" required/>
+    <label>email</label>
+    <input type="email" name="emai" required/>
+    <lable>phone no</lable>
+    <input type="tel" name="phonenumbr" >
+    <button>submit</button>
     </form>
-      <table>
- 
-        <tr>
-          <td><label for="name">Name:</label></td>
-          <td><input type="text" name="name" id="name" placeholder="your name"></td>
-        </tr>
-        <tr>
-          <td><label for="email">Email:</label></td>
-          <td><input type="text" name="email" id="email" placeholder="your email"></td>
-        </tr>
-       
-        <tr>
-          <td><label for="phoneNumber">Phone Number:</label></td>
-          <td><input type="number" name="phoneNumber" id="phoneNumber"></td>
-        </tr>
-        <tr>
-          
-        </tr>
-        <tr>
-          
-         <input type="submit" class="submit" value="Register" />
-        </tr>
-        <script src=".js"></script>
-        <script>
-      
-        </script>
-        }
-        
-      </table>
-    </form>
-  </div>
+     <ul id='listOfItems'></ul>
+  <script language="JavaScript" type="text/javascript" >
+      function saveToLocalStroage(event){
+         event.preventDefault();
+             const name=event.target.usernam.value;
+               const mail=event.target.emai.value;
+               const phone=event.target.phonenumbr.value;
+             // console.log(name);
+
+           const obj={
+                 name,
+              mail,
+              phone
+               }
+             localStorage.setItem(obj.mail, JSON.stringify(obj))
+           
+             showOnScreen(obj)
+             }
+               function showOnScreen(obj){
+                  const parentEme=document.getElementById('listOfItems')
+              const childEle=document.createElement('li')
+              childEle.textContent=obj.name +'  -   '+ obj.mail +'  -  '+obj.phone
+              
+
+              const deleteButton=document.createElement('input')
+              deleteButton.type="button"
+              deleteButton.value='delete'
+              deleteButton.onclick =() => {
+                localStorage.removeItem(obj.mail)
+                parentEme.removeChild(childEle)
+
+              }
+              childEle.appendChild(deleteButton)
+              parentEme.appendChild(childEle)
+               }
+      </script>
+  </body>
+</html>
