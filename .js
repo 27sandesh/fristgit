@@ -1,13 +1,18 @@
-function savetoLocalStroage(event){
-    event.preventDefault();
-    const name=event.target.name.value;
-    const email=event.target.email.value;
-    const phoneNumber=event.target.phoneNumber.value;
 
-    const obj={
-      name,
-      email,phoneNumber
+var obj = {
+
+    val: 100
+    
     }
-   
-  }
-  localStorage.setItem(obj.email, JSON.stringify(obj));
+    
+    function fun(a){
+    
+    console.log(this.val + a)
+    
+    }
+    
+    fun().call(obj)
+
+    
+    
+    

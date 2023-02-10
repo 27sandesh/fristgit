@@ -49,6 +49,9 @@
               editButton.onclick=() =>{
                 localStorage.removeItem(obj.mail)
                parentEme.removeChild(childEle)
+               document.getElementById('usernamInputTag').value=obj.name
+               document.getElementById('emaiInputTag').value=obj.mail
+               document.getElementById('phoneInputTag').value=obj.phone
               }
                childEle.appendChild(editButton) 
               childEle.appendChild(deleteButton)
