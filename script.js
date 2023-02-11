@@ -1,47 +1,50 @@
+// Define variables
 const expenseForm = document.querySelector("#expense-form");
 const expenseName = document.querySelector("#expense-name");
-const expenseAmount =document.querySelector("#expense-amount");
-const expenseList = document.querySelector('#expense-list');
+const expenseAmount = document.querySelector("#expense-amount");
+const expenseList = document.querySelector("#expense-list");
 const clearExpenses = document.querySelector("#clear-expenses");
 const totalExpenses = document.querySelector("#total-expenses");
 
-let expenses= [];
+let expenses = [];
 
-//retrive expenses from local storage
-if(localStorage.getItem("expenses")){
-  expenses=JSON.parse(localStorage.getItem("expenses"));
+// Retrieve expenses from local storage
+if (localStorage.getItem("expenses")) {
+  expenses = JSON.parse(localStorage.getItem("expenses"));
   displayExpenses();
 }
-//add expense to local storage and list
+
+// Add expense to the list and local storage
 expenseForm.addEventListener("submit", addExpense);
-function addExpense(event){
+function addExpense(event) {
   event.preventDefault();
-  if(expenseName.ariaValueMax.trim() =="" || expenseAmount.value.trim() ===""){
-  Swal.fire("Error", "Please enter a valid name and amount", "error");
-  } else{
-    const expense ={
-      id:Date.now(),
-      name:expenseName.value.trim(),
-      amount:parseInt(expenseAmount.value.trim())
+  if (expenseName.value.trim() === "" || expenseAmount.value.trim() === "") {
+    Swal.fire("Error", "Please enter a valid name and amount", "error");
+  } else {
+    const expense = {
+      id: Date.now(),
+      name: expenseName.value.trim(),
+      amount: parseInt(expenseAmount.value.trim())
     };
     expenses.push(expense);
-    localStorage.setItem("expenses",JSON.stringify(expenses));
+    localStorage.setItem("expenses", JSON.stringify(expenses));
     displayExpenses();
-    expenseName.value ="";
-    expenseAmount.value="";
+    expenseName.value = "";
+    expenseAmount.value = "";
   }
 }
-//display on screen
-function displayExpenses(){
-  expenseList.innerHTML ="";
-  let total=0;
-  for(let i=0; i<expenses.length; i++)
-  {
-    const expense=expenses[i];
-    const li=document.createElement("li");
-    li.innerHTML=`
-    <div class="d-flex justify-content-between align-items-center">
-    <div class="d-flex flex-column">
+
+// Display expenses on the screen
+function displayExpenses() {
+  expenseList.innerHTML = "";
+  let total = 0;
+  for (let i = 0; i < expenses.length; i++) {
+    const expense = expenses[i];
+    const li = document.createElement("li");
+    li.classList.add("list-group-item");
+    li.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex flex-column">
           <span>${expense.name}</span>
           <small class="text-muted">${formatDate(expense.id)}</small>
         </div>
@@ -51,38 +54,38 @@ function displayExpenses(){
           <button type="button" class="btn btn-danger btn-sm" data-id="${expense.id}">Delete</button>
         </div>
       </div>
-      `;
-      expenseList.appendChild(li);
-      total += expense.amount;
-    }
-    totalExpenses.innerHTML = `
-      <hr>
-      <h4 class="m-0">Total: $${total}</h4>
     `;
+    expenseList.appendChild(li);
+    total += expense.amount;
   }
-  
-  // Clear all expenses from the list and local storage
-  clearExpenses.addEventListener("click", function() {
-    expenses = [];
-    localStorage.removeItem("expenses");
-    displayExpenses();
-  });
-  
-  // Format date as YYYY-MM-DD
-  function formatDate(date) {
-    const d = new Date(date);
-    let month = "" + (d.getMonth() + 1);
-    let day = "" + d.getDate();
-    const year = d.getFullYear();
-    if (month.length < 2) {
-      month = "0" + month;
-    }
-    if (day.length < 2) {
-      day = "0" + day;
-    }
-    return [year, month, day].join("-");
+  totalExpenses.innerHTML = `
+    <hr>
+    <h4 class="m-0">Total: $${total}</h4>
+  `;
+}
+
+// Clear all expenses from the list and local storage
+clearExpenses.addEventListener("click", function() {
+  expenses = [];
+  localStorage.removeItem("expenses");
+  displayExpenses();
+});
+
+// Format date as YYYY-MM-DD
+function formatDate(date) {
+  const d = new Date(date);
+  let month = "" + (d.getMonth() + 1);
+  let day = "" + d.getDate();
+  const year = d.getFullYear();
+  if (month.length < 2) {
+    month = "0" + month;
   }
-  // Edit an expense from the list and local storage
+  if (day.length < 2) {
+    day = "0" + day;
+  }
+  return [year, month, day].join("-");
+}
+// Edit an expense from the list and local storage
 expenseList.addEventListener("click", function(event) {
   if (event.target.classList.contains("btn-edit")) {
     const id = event.target.getAttribute("data-id");
