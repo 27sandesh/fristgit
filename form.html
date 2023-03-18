@@ -45,25 +45,53 @@
               }).catch(err=>console.log(err)
             )
              })
+             function deleteUser(userId){
+              axios.delete("https://crudcrud.com/api/a33fb16a7de248df9c4260bbd7a79e3e").then(res=>{
+                removeUserfromScreen(userId)
+              })
+             }
              document.addEventListener('DOMContentLoaded', function() {
-  var deleteButtons = document.querySelectorAll('.delete-user');
-  for (var i = 0; i < deleteButtons.length; i++) {
-    deleteButtons[i].addEventListener('click', function(event) {
+  var editButtons = document.querySelectorAll('.edit-user');
+  for (var i = 0; i < editButtons.length; i++) {
+    editButtons[i].addEventListener('click', function(event) {
       var userId = event.target.dataset.userId;
       var xhr = new XMLHttpRequest();
-      xhr.open('DELETE', '/users/' + userId);
+      xhr.open('GET', '/user_details.php?id=' + userId);
       xhr.onload = function() {
         if (xhr.status === 200) {
-          var userDetail = document.getElementById('user-detail-' + userId);
-          userDetail.parentNode.removeChild(userDetail);
+          var userDetails = JSON.parse(xhr.responseText);
+          // populate form fields with user details
+          document.getElementById('registration-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('POST', '/edit_user.php?id=' + userId);
+            xhr2.setRequestHeader('Content-Type', 'application/json');
+            xhr2.onload = function() {
+              if (xhr2.status === 200) {
+                // update website with new user details
+                // ...
+              } else {
+                alert('Error editing user');
+              }
+            };
+            var formFields = document.getElementById('registration-form').elements;
+            var formData = {};
+            for (var i = 0; i < formFields.length; i++) {
+              if (formFields[i].name) {
+                formData[formFields[i].name] = formFields[i].value;
+              }
+            }
+            xhr2.send(JSON.stringify(formData));
+          });
         } else {
-          alert('Error deleting user');
+          alert('Error loading user details');
         }
       };
       xhr.send();
     });
   }
 });
+
 
                function showOnScreen(obj){
                   const parentEme=document.getElementById('listOfItems')
