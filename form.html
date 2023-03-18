@@ -45,6 +45,26 @@
               }).catch(err=>console.log(err)
             )
              })
+             document.addEventListener('DOMContentLoaded', function() {
+  var deleteButtons = document.querySelectorAll('.delete-user');
+  for (var i = 0; i < deleteButtons.length; i++) {
+    deleteButtons[i].addEventListener('click', function(event) {
+      var userId = event.target.dataset.userId;
+      var xhr = new XMLHttpRequest();
+      xhr.open('DELETE', '/users/' + userId);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          var userDetail = document.getElementById('user-detail-' + userId);
+          userDetail.parentNode.removeChild(userDetail);
+        } else {
+          alert('Error deleting user');
+        }
+      };
+      xhr.send();
+    });
+  }
+});
+
                function showOnScreen(obj){
                   const parentEme=document.getElementById('listOfItems')
               const childEle=document.createElement('li')
