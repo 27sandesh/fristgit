@@ -32,8 +32,19 @@
            }).catch((err)=>{
              console.log(err);
            })
-             showOnScreen(obj)
+
+            // showOnScreen(obj)
              }
+             window.addEventListener("DOMcontentLoaded",()=>{
+              axios.get("https://crudcrud.com/api/a33fb16a7de248df9c4260bbd7a79e3e").then((response)=>{
+                console.log(response);
+                for(var i=0; i<response.data.length; i++)
+                {
+                  showOnScreen(response.data[i]);
+                }
+              }).catch(err=>console.log(err)
+            )
+             })
                function showOnScreen(obj){
                   const parentEme=document.getElementById('listOfItems')
               const childEle=document.createElement('li')
